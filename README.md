@@ -8,4 +8,4 @@ Easy Recovery is an Application where the users can get all the details of a veh
  - Firebase Authentication
 
 # Preview
-![alt text](https://github.com/Farhan-0/EasyRecovery/blob/main/files/add_agent.jpg?raw=true)
+![Add Agent Screen](files/add_agent.jpg)
