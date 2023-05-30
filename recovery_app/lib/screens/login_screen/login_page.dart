@@ -165,10 +165,12 @@ class _LoginPageState extends State<LoginPage> {
               //   ),
               // ),
               // const SizedBox(height: 32),
-              Text(
-                "APP NAME",
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
+              FittedBox(
+                child: Text(
+                  "E A S Y   R E C O V E R Y",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
               ),
               SizedBox(
                 height: 250,

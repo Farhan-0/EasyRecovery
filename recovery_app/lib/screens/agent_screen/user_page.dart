@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:recovery_app/providers/role.dart';
 import 'package:recovery_app/screens/animation_screen/splash_screen.dart';
 import 'package:recovery_app/screens/agent_screen/widgets/user_body.dart';
+import 'package:recovery_app/widgets/my_drawer/my_drawer.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
@@ -52,6 +53,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
         ],
       ),
+      drawer: MyDrawer(),
       body: UserBody(roleProvider),
     );
   }

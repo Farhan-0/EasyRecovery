@@ -6,14 +6,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:recovery_app/constants.dart';
+import 'package:recovery_app/providers/auth.dart';
 import 'package:recovery_app/providers/vehicles.dart';
-import 'package:recovery_app/screens/admin_screen/widgets/add_agent.dart';
+import 'package:recovery_app/screens/add_agent/add_agent.dart';
 import 'package:recovery_app/screens/admin_screen/admin_page.dart';
 import 'package:recovery_app/screens/animation_screen/splash_screen.dart';
 import 'package:recovery_app/screens/chasis_detail_screen.dart';
 import 'package:recovery_app/screens/login_screen/login_page.dart';
+import 'package:recovery_app/screens/remove_user/remove_user.dart';
 import 'package:recovery_app/screens/search_result_screen/search_result.dart';
 import 'package:recovery_app/screens/agent_screen/user_page.dart';
+import 'package:recovery_app/screens/user_banned/user_banned_screen.dart';
 import 'package:recovery_app/screens/vehicle_detail_screen/vehicle_detail_screen.dart';
 import 'firebase_options.dart';
 import 'providers/role.dart';
@@ -76,6 +79,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (ctx) => Vehicles(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -134,12 +140,16 @@ class _MyAppState extends State<MyApp> {
                   future: role.getRole(),
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SplashScreen();
+                      return const SplashScreen();
                     } else {
-                      if (role.role == 'Admin') {
-                        return AdminScreen();
+                      if (role.checkBanned) {
+                        return UserBannedScreen();
+                      }
+                      if (role.role == 'Agent') {
+                        return const UserScreen();
                       } else {
-                        return UserScreen();
+                        return const AdminScreen();
+                        // return const RemoveUser();
                       }
                     }
                   },
@@ -157,6 +167,7 @@ class _MyAppState extends State<MyApp> {
           ChasisDetailScreen.routeName: (ctx) => const ChasisDetailScreen(),
           AddAgent.routeName: (ctx) => const AddAgent(),
           SearchResult.routeName: (ctx) => const SearchResult(),
+          RemoveUser.routeName: (ctx) => const RemoveUser(),
         },
       ),
     );

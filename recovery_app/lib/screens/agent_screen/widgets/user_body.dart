@@ -70,6 +70,22 @@ class UserBody extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(height: 10),
+        Container(
+          height: deviceSize.height * 0.6,
+          padding: const EdgeInsets.symmetric(horizontal: myDefaultPadding),
+          child: GridView.builder(
+            itemCount: 4,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              // childAspectRatio: 2 / 3,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+            ),
+            itemBuilder: (_, index) => GridItem(index),
+          ),
+        ),
       ]),
     );
   }

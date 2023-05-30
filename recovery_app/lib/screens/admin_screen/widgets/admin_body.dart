@@ -77,7 +77,7 @@ class AdminBody extends StatelessWidget {
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
               ),
-              itemBuilder: (_, index) => const GridItem(),
+              itemBuilder: (_, index) => GridItem(index),
             ),
           ),
         ],

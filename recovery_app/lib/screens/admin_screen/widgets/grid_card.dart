@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:recovery_app/constants.dart';
+import 'package:recovery_app/helpers/custom_icons.dart';
 
 class GridItem extends StatelessWidget {
-  const GridItem({super.key});
+  final int index;
+  static const List<IconData> _gridIcons = [
+    Icons.pending_actions_rounded,
+    CustomIcons.inYard,
+    CustomIcons.release,
+    CustomIcons.inHold,
+  ];
+  static const List<String> _gridCardName = [
+    'Pending',
+    'In Yard',
+    'Release',
+    'In Hold',
+  ];
+  static const List<int> _gridCardNumber = [
+    29285,
+    5,
+    0,
+    0,
+  ];
+  GridItem(
+    this.index, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +54,21 @@ class GridItem extends StatelessWidget {
         children: [
           SizedBox(height: deviceSize.height * 0.02),
           Icon(
-            Icons.pending_actions_rounded,
+            _gridIcons[index],
             size: deviceSize.height * 0.07,
           ),
           SizedBox(height: deviceSize.height * 0.02),
           Text(
-            'Pending',
+            _gridCardName[index],
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.blueGrey[700]),
           ),
           // SizedBox(height: deviceSize.height * 0.02),
           const Divider(thickness: 2),
           // SizedBox(height: deviceSize.height * 0.02),
-          const Flexible(
+          Flexible(
             child: Text(
-              'Count',
+              _gridCardNumber[index].toString(),
               style: TextStyle(color: myPrimaryColor),
             ),
           ),

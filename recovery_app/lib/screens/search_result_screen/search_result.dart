@@ -28,6 +28,7 @@ class _SearchResultState extends State<SearchResult> {
     // TODO: implement dispose
     _suffixFocusNode.dispose();
     _stateTextController.dispose();
+    _numberTextController.dispose();
     super.dispose();
   }
 
@@ -67,6 +68,7 @@ class _SearchResultState extends State<SearchResult> {
     if (_once) {
       _once = false;
       _stateTextController.text = state;
+      _numberTextController.text = vehicleNumber;
     }
 
     // listOfVehicles = Vehicles().searchWithVehicleNumber(vehicleNumber);
@@ -222,8 +224,8 @@ class _SearchResultState extends State<SearchResult> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            // controller: _numberTextController,
-                            initialValue: vehicleNumber,
+                            controller: _numberTextController,
+                            // initialValue: vehicleNumber,
                             focusNode: _suffixFocusNode,
                             textCapitalization: TextCapitalization.characters,
                             keyboardType: TextInputType.number,
@@ -311,7 +313,52 @@ class _SearchResultState extends State<SearchResult> {
                                     ),
                                   ))
                               : IconButton(
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    final value = _numberTextController.text
+                                        .toUpperCase();
+                                    _suffixFocusNode.unfocus();
+                                    setState(() {
+                                      _isNumberLoading = true;
+                                    });
+                                    // Empty grid
+                                    vehicleProvider.emptySelectedVehicles;
+                                    await _getStateList(
+                                        _stateTextController.text,
+                                        vehicleProvider);
+                                    if (_stateTextController.text.isEmpty) {
+                                      setState(() {
+                                        _isNumberLoading = false;
+                                      });
+                                      // show toast that "State Text cannot be empty"
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: const Text(
+                                              "Please Enter STATE Value on Left Field"),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          duration: const Duration(seconds: 5),
+                                        ),
+                                      );
+                                    } else if (_canSearch) {
+                                      setState(() {
+                                        _isGridLoading = true;
+                                        _isNumberLoading = true;
+                                      });
+                                      listOfVehicles.clear();
+                                      await vehicleProvider
+                                          .searchWithVehicleNumber(
+                                              value, _stateTextController.text);
+
+                                      // listOfVehicles = vehicleProvider.selectedList; //Working
+                                    }
+
+                                    setState(() {
+                                      _isGridLoading = false;
+                                      _isNumberLoading = false;
+                                    });
+                                  },
                                   icon: const Icon(
                                     Icons.search_rounded,
                                   ),

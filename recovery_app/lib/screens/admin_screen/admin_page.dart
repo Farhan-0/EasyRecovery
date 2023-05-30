@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recovery_app/providers/role.dart';
-import 'package:recovery_app/screens/admin_screen/widgets/add_agent.dart';
+import 'package:recovery_app/screens/add_agent/add_agent.dart';
 import 'package:recovery_app/screens/animation_screen/splash_screen.dart';
+import 'package:recovery_app/widgets/my_drawer/my_drawer.dart';
 
 import '../../models/menu_item.dart';
 import 'widgets/admin_body.dart';
@@ -42,20 +43,23 @@ class _AdminScreenState extends State<AdminScreen> {
     // final user = FirebaseAuth.instance.currentUser;
     // final userEmail = user!.email as String;
     final roleProvider = Provider.of<Role>(context, listen: false);
+    final role = roleProvider.role;
     return Scaffold(
       // extendBodyBehindAppBar: true,
       appBar: AppBar(
         // backgroundColor: Colors.transparent,
+
         elevation: 0,
-        title: Text(roleProvider.role),
+        title: Center(child: Text(role)),
         actions: [
           PopupMenuButton<MenuItem>(
             onSelected: (selectedItem) => _onSelected(context, selectedItem),
             itemBuilder: (ctx) => [
               ...[
-                const MenuItem(
-                    menuText: 'Add Agent',
-                    menuIcon: Icons.person_add_alt_rounded),
+                if (role == 'SuperAdmin')
+                  const MenuItem(
+                      menuText: 'Add Agent',
+                      menuIcon: Icons.person_add_alt_rounded),
                 const MenuItem(
                     menuText: 'Logout', menuIcon: Icons.exit_to_app_rounded),
               ].map(_buildMenuItem).toList(),
@@ -63,6 +67,7 @@ class _AdminScreenState extends State<AdminScreen> {
           ),
         ],
       ),
+      drawer: const MyDrawer(),
       body: AdminBody(roleProvider: roleProvider),
     );
   }

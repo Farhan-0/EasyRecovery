@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recovery_app/providers/role.dart';
 
 import '../constants.dart';
 import '../models/vehicle.dart';
@@ -17,7 +18,8 @@ class _ChassisSearchState extends State<ChassisSearch> {
   final _chassisTextController = TextEditingController();
   bool _isLoading = false;
 
-  void _goToVehicleDetailScreen(BuildContext context, Vehicle vehicle) {
+  void _goToVehicleDetailScreen(
+      BuildContext context, Vehicle vehicle, String role) {
     // print(listOfVehicles.map((e) => print(e.agrNo)));
     Navigator.of(context).pushNamed(VehicleDetailScreen.routeName, arguments: {
       'userName': vehicle.userName,
@@ -31,6 +33,7 @@ class _ChassisSearchState extends State<ChassisSearch> {
       'emiOs': vehicle.emiOs,
       'total': vehicle.total,
       'company': vehicle.company,
+      'role': role,
     });
   }
 
@@ -38,6 +41,7 @@ class _ChassisSearchState extends State<ChassisSearch> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final vehicleProvider = Provider.of<Vehicles>(context);
+    final role = Provider.of<Role>(context, listen: false).role;
     return Container(
       // height: 100,
       width: 350,
@@ -120,7 +124,7 @@ class _ChassisSearchState extends State<ChassisSearch> {
                                 _isLoading = false;
                               });
                               _chassisTextController.clear();
-                              _goToVehicleDetailScreen(context, vehicle);
+                              _goToVehicleDetailScreen(context, vehicle, role);
                             }
                           },
                         ),
@@ -187,7 +191,7 @@ class _ChassisSearchState extends State<ChassisSearch> {
                               _isLoading = false;
                             });
                             _chassisTextController.clear();
-                            _goToVehicleDetailScreen(context, vehicle);
+                            _goToVehicleDetailScreen(context, vehicle, role);
                           }
                         },
                         icon: const Icon(

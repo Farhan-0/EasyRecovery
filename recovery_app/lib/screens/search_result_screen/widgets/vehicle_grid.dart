@@ -5,6 +5,7 @@ import 'package:recovery_app/constants.dart';
 import 'package:recovery_app/models/vehicle.dart';
 import 'package:recovery_app/screens/vehicle_detail_screen/vehicle_detail_screen.dart';
 
+import '../../../providers/role.dart';
 import '../../../providers/vehicles.dart';
 
 class VehiclesGrid extends StatelessWidget {
@@ -13,7 +14,8 @@ class VehiclesGrid extends StatelessWidget {
     super.key,
   });
 
-  void _goToVehicleDetailScreen(BuildContext context, Vehicle vehicle) {
+  void _goToVehicleDetailScreen(
+      BuildContext context, Vehicle vehicle, String role) {
     // print(listOfVehicles.map((e) => print(e.agrNo)));
     Navigator.of(context).pushNamed(VehicleDetailScreen.routeName, arguments: {
       'userName': vehicle.userName,
@@ -27,6 +29,7 @@ class VehiclesGrid extends StatelessWidget {
       'emiOs': vehicle.emiOs,
       'total': vehicle.total,
       'company': vehicle.company,
+      'role': role,
     });
   }
 
@@ -35,6 +38,7 @@ class VehiclesGrid extends StatelessWidget {
     final vehicleProvider = Provider.of<Vehicles>(context);
     // final listOfVehicles = Provider.of<Vehicles>(context).selectedList;
     final listOfVehicles = vehicleProvider.selectedVehicleIds;
+    final role = Provider.of<Role>(context, listen: false).role;
     return listOfVehicles.isEmpty
         ? Column(
             children: [
@@ -96,7 +100,7 @@ class VehiclesGrid extends StatelessWidget {
                       final vehicle = vehicleProvider.selectedvehicle;
                       // _goToVehicleDetailScreen(context, listOfVehicles, index);
                       if (context.mounted) {
-                        _goToVehicleDetailScreen(context, vehicle);
+                        _goToVehicleDetailScreen(context, vehicle, role);
                       }
                     },
                     child: Container(
